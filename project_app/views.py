@@ -1,6 +1,6 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from project_app.forms import ProjectForm
-from project_app.models import Project
+from project_app.models import Project, User
 
 
 def index(request):
@@ -16,7 +16,9 @@ def add_project(request):
             return redirect('home')  # Redirect to the home page after adding the project
     else:
         form = ProjectForm()
-    return render(request, 'add_project.html', {'form': form})
+        # Fetch users with role "manager"
+        managers = User.objects.filter(user_role='manager')
+    return render(request, 'add_project.html', {'form': form, 'managers': managers})
 
 
 def project_details(request, project_id):
