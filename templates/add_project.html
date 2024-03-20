@@ -12,9 +12,9 @@
 <body>
 <div class="container d-flex justify-content-center">
     <form method="post" style="flex-basis: 60%">
-    <div class="my-4">
-        <a href="/">Back to menu</a>
-    </div>
+        <div class="my-4">
+            <a href="/">Back to menu</a>
+        </div>
         {% csrf_token %}
         <div class="mb-3">
             <label for="project_name" class="form-label">Project Name</label>
@@ -40,14 +40,12 @@
                    max="100">
         </div>
         <div class="field mb-3">
-            <label class="form-label">Project Manager</label>
-            <div class="control">
-                <select class="form-select" id="project_manager" name="project_manager">
-                    {% for manager in managers %}
-                        <option value="{{ manager.id }}">{{ manager.username }}</option>
-                    {% endfor %}
-                </select>
-            </div>
+            <label class="form-label" for="project_manager">Project Manager</label>
+            <select class="form-select" id="project_manager" name="project_manager">
+                {% for manager in managers %}
+                    <option value="{{ manager.id }}">{{ manager.username }}</option>
+                {% endfor %}
+            </select>
         </div>
         <div class="my-4">
             <button type="submit" class="btn btn-dark">Add Project</button>
