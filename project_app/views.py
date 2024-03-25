@@ -1,7 +1,6 @@
 from django.shortcuts import render, redirect, get_object_or_404
-from project_app.forms import ProjectForm, TaskForm
+from project_app.forms import ProjectForm, TaskForm, UserForm
 from project_app.models import Project, User
-
 
 def index(request):
     projects = Project.objects.all()
@@ -38,3 +37,25 @@ def add_task_to_project(request, project_id):
     else:
         form = TaskForm()
     return render(request, 'add_task.html', {'form': form})
+
+
+def user_home(request):
+    users = User.objects.all()
+    return render(request, 'user.html', {'users': users})
+
+def add_user(request):
+    if request.method == 'POST':
+        form = UserForm(request.POST)
+        if form.is_valid():
+            form.save()
+            return redirect('users')
+        else:
+            form = UserForm()
+        return render(request, 'add_user.html', {'form': form})
+
+def user_details(request, user_id):
+    user = get_object_or_404(User, pk=user_id)
+    tasks = user.task_set.all()  # Retrieve all tasks associated with this project
+    return render(request, 'user_details.html', {'user': user, 'tasks': tasks})
+
+
