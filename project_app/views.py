@@ -41,7 +41,7 @@ def add_task_to_project(request, project_id):
 
 def user_home(request):
     users = User.objects.all()
-    return render(request, 'user.html', {'users': users})
+    return render(request, 'user/user.html', {'users': users})
 
 def add_user(request):
     if request.method == 'POST':
@@ -51,11 +51,11 @@ def add_user(request):
             return redirect('users')
         else:
             form = UserForm()
-        return render(request, 'add_user.html', {'form': form})
+        return render(request, 'user/add_user.html', {'form': form})
 
 def user_details(request, user_id):
     user = get_object_or_404(User, pk=user_id)
     tasks = user.task_set.all()  # Retrieve all tasks associated with this project
-    return render(request, 'user_details.html', {'user': user, 'tasks': tasks})
+    return render(request, 'user/user_details.html', {'user': user, 'tasks': tasks})
 
 
