@@ -12,7 +12,7 @@
 <body>
 <div class="container-fluid">
     <div class="row flex-sm-nowrap">
-        <!-- Page content -->
+        <!--  Navigation -->
         <div class="d-flex flex-column flex-shrink-0 p-3 text-bg-dark min-vh-100" style="width: 280px;">
             <a href="/" class="navbar-brand d-flex gap-3 mb-4 mt-2">
                 <svg xmlns="http://www.w3.org/2000/svg" width="1.5rem" fill="currentColor"
@@ -25,7 +25,7 @@
             </a>
             <ul class="nav nav-pills flex-column mb-auto">
                 <li class="nav-item">
-                    <a href="#" class="nav-link text-white current">
+                    <a href="/" class="nav-link text-white current">
                         <svg class="bi pe-none me-2" width="16" height="16" xmlns="http://www.w3.org/2000/svg"#}
                              fill="currentColor" viewBox="0 0 16 16">
                             <path d="M4 11a1 1 0 1 1 2 0v1a1 1 0 1 1-2 0zm6-4a1 1 0 1 1 2 0v5a1 1 0 1 1-2 0zM7 9a1 1 0 0 1 2 0v3a1 1 0 1 1-2 0z"></path>
@@ -100,13 +100,13 @@
                             <td>{{ project.project_manager }}</td>
                             <td>
                                 {% if project.status == 'pending' %}
-                                    <span class="badge bg-warning-subtle text-warning-emphasis rounded-pill">En attente</span>
+                                    <span class="badge text-bg-secondary">En attente</span>
                                 {% elif project.status == 'delivered' %}
-                                    <span class="badge text-bg-success rounded-pill">Livré</span>
+                                    <span class="badge text-bg-success">Livré</span>
                                 {% elif project.status == 'planned' %}
-                                    <span class="badge bg-secondary-subtle text-secondary-emphasis rounded-pill">Planifié</span>
+                                    <span class="badge text-bg-light">Planifié</span>
                                 {% elif project.status == 'paused' %}
-                                    <span class="badge bg-danger-subtle text-danger-emphasis rounded-pill">En pause</span>
+                                    <span class="badge text-bg-danger">En pause</span>
                                 {% endif %}
                             </td>
                             <td>
