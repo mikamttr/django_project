@@ -17,6 +17,14 @@ class User(models.Model):
 
 
 class Task(models.Model):
+    STATUS_CHOICES = (
+        ('paused', 'En pause'),
+        ('planned', 'Planifié'),
+        ('ongoing', 'En cours'),
+        ('completed', 'Réalisée'),
+        ('validated', 'Validée'),
+    )
+
     PRIORITY_CHOICES = (
         ('low', 'Faible'),
         ('medium', 'Moyenne'),
@@ -28,7 +36,7 @@ class Task(models.Model):
     priority = models.CharField(max_length=20, choices=PRIORITY_CHOICES)
     start_date = models.DateField()
     duration = models.IntegerField()
-    status = models.CharField(max_length=20)
+    status = models.CharField(max_length=20, choices=STATUS_CHOICES)
     completion_percentage = models.IntegerField(default=0)
     project = models.ForeignKey('Project', on_delete=models.CASCADE)
     assigned_to = models.ManyToManyField(User, related_name='assigned_tasks')
