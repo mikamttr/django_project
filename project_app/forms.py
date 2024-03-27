@@ -17,5 +17,4 @@ class TaskForm(forms.ModelForm):
 class UserForm(forms.ModelForm):
     class Meta:
         model = User
-        fields = ['username','email','user_role']
-
+        fields = ['username', 'email', 'user_role']

@@ -1,69 +1,25 @@
         <div class="col py-3">
             <a href="/">Back to menu</a>
 
-            <h2 class="my-3">{{ project.project_name }}</h2>
-            <hr>
-            <p>Project Manager: {{ project.project_manager }}</p>
-            <p>Status: {{ project.status }}</p>
-            <p>Start Date: {{ project.start_date }}</p>
-            <p>Delivery Date: {{ project.delivery_date }}</p>
-            <p>Progress Percentage: {{ project.progress_percentage }}</p>
-
             <!-- Tasks Section -->
-            <h3 class="mt-4">Tasks</h3>
+            <h3 class="mt-4">Users</h3>
 
             <!-- Table displaying all project tasks -->
             <div class="table-responsive small">
                 <table class="table table-hover">
                     <thead>
                     <tr>
-                        <th>Task name</th>
-                        <th>Priority</th>
-                        <th>Start Date</th>
-                        <th>Duration</th>
-                        <th>Status</th>
-                        <th>Completion</th>
-                        <th>Assigned To</th>
-                        <th>Progress Reporter</th>
+                        <th>username</th>
+                        <th>email</th>
+                        <th>user_role</th>
                     </tr>
                     </thead>
                     <tbody>
-                    {% for task in project.task_set.all %}
                         <tr>
-                            <td>{{ task.task_name }}</td>
-                            <td>
-                                {% if task.priority == 'low' %}
-                                    <span class="text-secondary">Faible</span>
-                                {% elif task.priority == 'medium' %}
-                                    <span class="text-success">Moyenne</span>
-                                {% elif task.priority == 'high' %}
-                                    <span class="text-danger">Élevée</span>
-                                {% endif %}
-                            </td>
-                            <td>{{ task.start_date }}</td>
-                            <td>{{ task.duration }}</td>
-                            <td>{{ task.status }}</td>
-                            <td>
-                                <div class="row align-items-center">
-                                    <div class="col">
-                                        <div class="progress" role="progressbar"
-                                             aria-valuenow="{{ task.completion_percentage }}" aria-valuemin="0"
-                                             aria-valuemax="100">
-                                            <div class="progress-bar bg-success"
-                                                 style="width: {{ task.completion_percentage }}%"></div>
-                                        </div>
-                                    </div>
-                                    <small class="col-3">{{ task.completion_percentage }}%</small>
-                                </div>
-                            </td>
-                            <td>
-                                {% for user in task.assigned_to.all %}
-                                    {{ user.username }}{% if not forloop.last %}, {% endif %}
-                                {% endfor %}
-                            </td>
-                            <td>{{ task.progress_reporter.username }}</td>
+                            <td>{{ user.username }}</td>
+                            <td>{{ user.email }}</td>
+                            <td>{{ user.user_role }}</td>
                         </tr>
-                    {% endfor %}
                     </tbody>
                 </table>
             </div>
