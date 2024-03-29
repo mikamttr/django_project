@@ -1,0 +1,52 @@
+</div>
+            <div class="col py-3">
+            <h2>Leaves</h2>
+            <div class="my-4">
+                <!-- Link to the page for adding new projects -->
+                <a class="btn btn-dark btn-sm d-inline-flex" type="button" href="{% url 'add_project' %}">
+                    <svg class="me-1" xmlns="http://www.w3.org/2000/svg" width="16" fill="currentColor"
+                         viewBox="0 0 16 16">
+                        <path d="M8 4a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5 0 0 1 8 4"></path>
+                    </svg>
+                    <span class="me-2">New Leave</span>
+                </a>
+            </div>
+            <hr>
+            <div class="table-responsive small">
+                <table class="table table-borderless table-hover">
+                    <thead>
+                    <tr>
+                        <th>Leave name</th>
+                        <th>Employee</th>
+                        <th>Start date</th>
+                        <th>End date</th>
+                        <th></th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    {% for leave in leaves %}
+                        <tr>
+                            <td>{{ leave.leave_name }}</td>
+                            <td>{{ leave.user_id }}</td>
+                            <td>
+                                <small class="text-secondary">{{ leave.start_date }}</small>
+                            </td>
+                            <td>
+                                <small class="text-secondary">{{ leave.end_date }}</small>
+                            </td>
+                            <td class="text-end">
+                                <a href="{% url 'project_details' leave.id %}" class="link-dark opacity-75">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
+                                         fill="currentColor" class="bi bi-info-circle" viewBox="0 0 16 16">
+                                        <title>{{ leave.leave_name }} details</title>
+                                        <path d="M10.5 8a2.5 2.5 0 1 1-5 0 2.5 2.5 0 0 1 5 0"></path>
+                                        <path d="M0 8s3-5.5 8-5.5S16 8 16 8s-3 5.5-8 5.5S0 8 0 8m8 3.5a3.5 3.5 0 1 0 0-7 3.5 3.5 0 0 0 0 7"></path>
+                                    </svg>
+                                </a>
+                            </td>
+                        </tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>

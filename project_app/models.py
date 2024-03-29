@@ -59,6 +59,7 @@ class Project(models.Model):
 
 class Leave(models.Model):
     leave_name = models.CharField(max_length=100)
+    leave_description = models.CharField(max_length=100)
     start_date = models.DateField(default=timezone.now)
     end_date = models.DateField()
     user_id = models.ForeignKey(User, on_delete=models.CASCADE, related_name='FK_Leave_user_id')

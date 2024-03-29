@@ -1,11 +1,12 @@
 from django.shortcuts import render, redirect, get_object_or_404
-from project_app.forms import ProjectForm, TaskForm
-from project_app.models import Project, User
+from project_app.forms import ProjectForm, TaskForm, LeaveForm
+from project_app.models import Project, User, Leave
 
 
 def index(request):
     projects = Project.objects.all()
-    return render(request, 'index.html', {'projects': projects})
+    leaves = Leave.objects.all()
+    return render(request, 'index.html', {'projects': projects, 'leaves': leaves})
 
 
 def add_project(request):
@@ -37,4 +38,15 @@ def add_task_to_project(request, project_id):
             return redirect('project_detail', project_id=project_id)
     else:
         form = TaskForm()
+    return render(request, 'add_task.html', {'form': form})
+
+def add_leave(request):
+    if request.method == 'POST':
+        form = LeaveForm(request.POST)
+        if form.is_valid():
+            leave = form.save(commit=False)
+            leave.save()
+            return redirect('index')
+    else:
+        form = LeaveForm()
     return render(request, 'add_task.html', {'form': form})
