@@ -1,0 +1,106 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="{% static 'css/style.css' %}" rel="stylesheet">
+    <link href="{% static 'css/bootstrap.min.css' %}" rel="stylesheet">
+    <script src="{% static 'js/bootstrap.bundle.min.js' %}"></script>
+    <title>Edit Task</title>
+</head>
+<body>
+<div class="container d-flex justify-content-center">
+    <form method="post" style="flex-basis: 60%">
+        <div class="my-4">
+            <a href="javascript:history.back()">Go Back</a>
+        </div>
+        {% csrf_token %}
+        <div class="mb-3">
+            <label for="task_name" class="form-label">Task Name</label>
+            <input type="text" class="form-control" id="task_name" name="task_name" value="{{ task.task_name }}">
+        </div>
+        <div class="mb-3">
+            <label for="description" class="form-label">Description</label>
+            <textarea class="form-control" id="description" name="description">{{ task.description }}</textarea>
+        </div>
+        <div class="mb-3">
+            <label for="priority" class="form-label">Priority</label>
+            <select class="form-select" id="priority" name="priority">
+                {% for choice in task.PRIORITY_CHOICES %}
+                    <option value="{{ choice.0 }}" {% if choice.0 == task.priority %}
+                            selected {% endif %}>{{ choice.1 }}</option>
+                {% endfor %}
+            </select>
+        </div>
+        <div class="mb-3">
+            <label for="start_date" class="form-label">Start Date</label>
+            <input type="date" class="form-control" id="start_date" name="start_date"
+                   value="{{ task.start_date|date:'Y-m-d' }}">
+        </div>
+        <div class="mb-3">
+            <label for="duration" class="form-label">Duration (in days)</label>
+            <input type="number" class="form-control" id="duration" name="duration" value="{{ task.duration }}">
+        </div>
+        <div class="mb-3">
+            <label for="status" class="form-label">Status</label>
+            <select class="form-select" id="status" name="status">
+                {% for choice in task.STATUS_CHOICES %}
+                    <option value="{{ choice.0 }}" {% if choice.0 == task.status %}
+                            selected {% endif %}>{{ choice.1 }}</option>
+                {% endfor %}
+            </select>
+        </div>
+        <div class="mb-3">
+            <label for="completion_percentage" class="form-label">Completion Percentage</label>
+            <input type="number" class="form-control" id="completion_percentage" name="completion_percentage" min="0"
+                   max="100" value="{{ task.completion_percentage }}">
+        </div>
+        <div class="mb-3">
+            <label for="project" class="form-label">Project</label>
+            <select class="form-select" id="project" name="project">
+                {% for project in projects %}
+                    <option value="{{ project.id }}" {% if project.id == task.project_id %}
+                            selected {% endif %}>{{ project.project_name }}</option>
+                {% endfor %}
+            </select>
+        </div>
+        <div class="mb-3">
+            <label for="assigned_to" class="form-label">Assigned To</label>
+            <select class="form-select" id="assigned_to" name="assigned_to" multiple>
+                {% for user in users %}
+                    <option value="{{ user.id }}" {% if user in task.assigned_to.all %}
+                            selected {% endif %}>{{ user.username }}</option>
+                {% endfor %}
+            </select>
+        </div>
+        <div class="mb-3">
+            <label for="progress_reporter" class="form-label">Progress Reporter</label>
+            <select class="form-select" id="progress_reporter" name="progress_reporter">
+                {% for user in users %}
+                    <option value="{{ user.id }}" {% if user.id == task.progress_reporter_id %}
+                            selected {% endif %}>{{ user.username }}</option>
+                {% endfor %}
+            </select>
+        </div>
+        <div class="mb-3">
+            <label for="parent_task" class="form-label">Parent Task</label>
+            <select class="form-select" id="parent_task" name="parent_task">
+                <option value="" {% if task.parent_task_id == None %} selected {% endif %}>None</option>
+                {% if task.parent_task %}
+                    <option value="{{ task.parent_task.id }}" selected>{{ task.parent_task.task_name }}</option>
+                {% endif %}
+                {% for project_task in project_tasks %}
+                    {% if project_task.id != task.id %} {# Exclude the current task from the list #}
+                        <option value="{{ project_task.id }}">{{ project_task.task_name }}</option>
+                    {% endif %}
+                {% endfor %}
+            </select>
+        </div>
+        <div class="my-4">
+            <button type="submit" class="btn btn-dark">Save Changes</button>
+        </div>
+    </form>
+</div>
+</body>
+</html>
