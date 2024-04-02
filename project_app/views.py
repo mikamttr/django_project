@@ -40,13 +40,15 @@ def add_task_to_project(request, project_id):
         form = TaskForm()
     return render(request, 'add_task.html', {'form': form})
 
+
 def add_leave(request):
     if request.method == 'POST':
         form = LeaveForm(request.POST)
         if form.is_valid():
             leave = form.save(commit=False)
             leave.save()
-            return redirect('index')
+            return redirect('home')
     else:
         form = LeaveForm()
-    return render(request, 'add_task.html', {'form': form})
+        users = User.objects.all()
+    return render(request, 'Leaves/add_leave.html', {'form': form, 'users': users})
