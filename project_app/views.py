@@ -5,9 +5,9 @@ from project_app.forms import ProjectForm, TaskForm
 from project_app.models import Project, User, Task
 
 
-def index(request):
+def home(request):
     projects = Project.objects.all()
-    return render(request, 'index.html', {'projects': projects})
+    return render(request, 'home.html', {'projects': projects})
 
 
 def add_project(request):
