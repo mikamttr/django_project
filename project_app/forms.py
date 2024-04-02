@@ -13,6 +13,7 @@ class TaskForm(forms.ModelForm):
         model = Task
         fields = '__all__'
 
+
 class UserForm(forms.ModelForm):
     class Meta:
         model = User
