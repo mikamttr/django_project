@@ -1,5 +1,6 @@
 from itertools import groupby
 
+from django.contrib.auth import logout, authenticate, login
 from django.shortcuts import render, redirect, get_object_or_404
 from project_app.forms import ProjectForm, TaskForm
 from project_app.models import Project, User, Task
@@ -8,6 +9,24 @@ from project_app.models import Project, User, Task
 def home(request):
     projects = Project.objects.all()
     return render(request, 'home.html', {'projects': projects})
+
+
+def connexion(request):
+    if request.method == 'POST':
+        username = request.POST.get('username')
+        password = request.POST.get('password')
+
+        user = authenticate(username=username, password=password)
+        if user:
+            login(request, user)
+            return redirect('home')
+
+    return render(request, 'connexion.html')
+
+
+def logout_user(request):
+    logout(request)
+    return redirect('connexion')
 
 
 def add_project(request):

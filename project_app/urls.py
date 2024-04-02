@@ -1,9 +1,11 @@
 from django.urls import path
 from . import views
-
+from .views import connexion, logout_user
 
 urlpatterns = [
     path('', views.home, name='home'),
+    path('connexion/', connexion, name='connexion'),
+    path('logout/', logout_user, name='logout'),
     path('projects/add/', views.add_project, name='add_project'),
     path('projects/<int:project_id>/', views.project_details, name='project_details'),
     path('project/edit/<int:project_id>/', views.edit_project, name='edit_project'),
