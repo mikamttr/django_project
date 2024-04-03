@@ -1,20 +1,29 @@
+from django.contrib.auth.models import AbstractUser
+from django.db import models
+from django.utils import timezone
+
+from django.contrib.auth.models import AbstractUser
 from django.db import models
 from django.utils import timezone
 
 
-class User(models.Model):
-    ROLE_CHOICES = (
-        ('manager', 'Manager'),
-        ('employee', 'Employee'),
+class User(AbstractUser):
+
+    groups = models.ManyToManyField(
+        'auth.Group',
+        verbose_name='groups',
+        blank=True,
+        related_name='user_custom_set',
+        related_query_name='user_custom',
     )
 
-    username = models.CharField(max_length=100)
-    email = models.EmailField(unique=True)
-    user_role = models.CharField(max_length=20, choices=ROLE_CHOICES)
-    password = models.CharField(max_length=255, default='123')
-
-    def __str__(self):
-        return self.username
+    user_permissions = models.ManyToManyField(
+        'auth.Permission',
+        verbose_name='user permissions',
+        blank=True,
+        related_name='user_custom_set',
+        related_query_name='user_custom',
+    )
 
 
 class Task(models.Model):
@@ -59,9 +68,9 @@ class Project(models.Model):
     project_name = models.CharField(max_length=100)
     start_date = models.DateField(default=timezone.now)
     delivery_date = models.DateField()
-    status = models.CharField(max_length=20, choices=STATUS_CHOICES, default='planned') # status par défault sur "planifié" à la création
-    progress_percentage = models.IntegerField(default=0)
-    project_manager = models.ForeignKey(User, on_delete=models.CASCADE, related_name='projects_managed')
+    status = models.CharField(max_length=20, choices=STATUS_CHOICES,
+                              default='planned')  # status par défault sur "planifié" à la création
+    project_manager = models.ForeignKey(User, on_delete=models.CASCADE, related_name='project_manager')
 
     def __str__(self):
         return self.project_name

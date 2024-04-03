@@ -143,7 +143,6 @@ def delete_task(request, task_id):
         # Redirect the user to the project details page after deletion
         return redirect('project_details', project_id=task.project.id)
 
-    return render(request, 'add_task.html', {'form': form})
 
 @login_required
 def user_home(request):
@@ -169,16 +168,18 @@ def user_details(request, user_id):
 
 @login_required
 def edit_user(request, user_id):
-    user = get_object_or_404(Project, id=user_id)
+    user = get_object_or_404(User, pk=user_id)
+    # Fetch all distinct user roles
+    user_roles = User.objects.values_list('user_role', flat=True).distinct()
     if request.method == 'POST':
-        form = ProjectForm(request.POST, instance=user)
+        form = UserForm(request.POST, instance=user)
         if form.is_valid():
             form.save()
-            return redirect('project_details', user_id=user_id)
+            return redirect('user_details', user_id=user_id)
     else:
-        form = ProjectForm(instance=user)
-        managers = User.objects.filter(user_role='manager')
-    return render(request, 'project/edit_project.html', {'form': form, 'managers': managers})
+        form = UserForm(instance=user)
+    return render(request, 'user/edit_user.html', {'form': form, 'user_roles': user_roles})
+
 
 @login_required
 def delete_user(request, user_id):
