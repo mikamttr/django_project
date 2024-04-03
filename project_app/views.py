@@ -137,7 +137,7 @@ def add_user(request):
         form = UserForm(request.POST)
         if form.is_valid():
             form.save()
-            return redirect('user_home')
+            return redirect('home_user')
     else:
         form = UserForm()
     return render(request, 'user/add_user.html', {'form': form, 'roles': roles})
@@ -165,4 +165,4 @@ def delete_user(request, user_id):
     user = get_object_or_404(User, id=user_id)
     if request.method == 'POST':
         user.delete()
-        return redirect('home')
+        return redirect('home_user')
