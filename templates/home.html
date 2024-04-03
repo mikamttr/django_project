@@ -100,7 +100,7 @@
                             <td>{{ project.project_manager }}</td>
                             <td>
                                 {% if project.status == 'pending' %}
-                                    <span class="badge text-bg-secondary">En attente</span>
+                                    <span class="badge text-bg-secondary">En cours</span>
                                 {% elif project.status == 'delivered' %}
                                     <span class="badge text-bg-success">Livré</span>
                                 {% elif project.status == 'planned' %}

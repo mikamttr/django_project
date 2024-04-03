@@ -59,7 +59,7 @@ class Project(models.Model):
     project_name = models.CharField(max_length=100)
     start_date = models.DateField(default=timezone.now)
     delivery_date = models.DateField()
-    status = models.CharField(max_length=20, choices=STATUS_CHOICES)
+    status = models.CharField(max_length=20, choices=STATUS_CHOICES, default='planned') # status par défault sur "planifié" à la création
     progress_percentage = models.IntegerField(default=0)
     project_manager = models.ForeignKey(User, on_delete=models.CASCADE, related_name='projects_managed')
 
