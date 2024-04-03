@@ -86,7 +86,7 @@
                 <table class="table table-borderless table-hover">
                     <thead>
                     <tr>
-                        <th>User name</th>
+                        <th>Username</th>
                         <th>email</th>
                         <th>role</th>
                         <th></th>
@@ -95,11 +95,15 @@
                     <tbody>
                     {% for user in users %}
                         <tr>
-                            <td>{{ user.email }}</td>
                             <td>{{ user.username }}</td>
+                            <td>{{ user.email }}</td>
 
                             <td>
-                                <small class="text-secondary">{{ user.user_role }}</small>
+                                {% if user.user_role == 'employee' %}
+                                    <small class="text-secondary">{{ user.user_role }}</small>
+                                {% elif user.user_role == 'manager' %}
+                                    <small class="text-success fw-bold">{{ user.user_role }}</small>
+                                {% endif %}
                             </td>
                             <td class="text-end">
                                 <a href="{% url 'user_details' user.id %}" class="link-dark opacity-75">
