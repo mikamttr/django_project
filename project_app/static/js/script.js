@@ -13,3 +13,11 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     });
 });
+
+document.addEventListener('DOMContentLoaded', function() {
+    document.getElementById('deleteUserButton').addEventListener('click', function() {
+        if (confirm('Are you sure you want to delete this user?')) {
+            document.getElementById('deleteUserForm').submit();
+        }
+    });
+});

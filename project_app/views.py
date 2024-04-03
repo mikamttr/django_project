@@ -132,14 +132,14 @@ def user_home(request):
 
 
 def add_user(request):
+    roles = User.ROLE_CHOICES
     if request.method == 'POST':
         form = UserForm(request.POST)
         if form.is_valid():
             form.save()
-            return redirect('users')
+            return redirect('user_home')
     else:
         form = UserForm()
-        roles = User.ROLE_CHOICES
     return render(request, 'user/add_user.html', {'form': form, 'roles': roles})
 
 
