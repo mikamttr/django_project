@@ -1,7 +1,7 @@
 from itertools import groupby
 
 from django.shortcuts import render, redirect, get_object_or_404
-from project_app.forms import ProjectForm, TaskForm
+from project_app.forms import ProjectForm, TaskForm, UserForm
 from project_app.models import Project, User, Task
 
 
@@ -122,3 +122,47 @@ def delete_task(request, task_id):
         task.delete()
         # Redirect the user to the project details page after deletion
         return redirect('project_details', project_id=task.project.id)
+
+    return render(request, 'add_task.html', {'form': form})
+
+
+def user_home(request):
+    users = User.objects.all()
+    return render(request, 'user/user.html', {'users': users})
+
+
+def add_user(request):
+    if request.method == 'POST':
+        form = UserForm(request.POST)
+        if form.is_valid():
+            form.save()
+            return redirect('users')
+    else:
+        form = UserForm()
+        roles = User.ROLE_CHOICES
+    return render(request, 'user/add_user.html', {'form': form, 'roles': roles})
+
+
+def user_details(request, user_id):
+    user = get_object_or_404(User, pk=user_id)
+    return render(request, 'user/user_details.html', {'user': user})
+
+
+def edit_user(request, user_id):
+    user = get_object_or_404(Project, id=user_id)
+    if request.method == 'POST':
+        form = ProjectForm(request.POST, instance=user)
+        if form.is_valid():
+            form.save()
+            return redirect('project_details', user_id=user_id)
+    else:
+        form = ProjectForm(instance=user)
+        managers = User.objects.filter(user_role='manager')
+    return render(request, 'project/edit_project.html', {'form': form, 'managers': managers})
+
+
+def delete_user(request, user_id):
+    user = get_object_or_404(User, id=user_id)
+    if request.method == 'POST':
+        user.delete()
+        return redirect('home')
