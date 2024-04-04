@@ -1,0 +1,64 @@
+<!-- Navigation -->
+<div class="d-flex flex-column flex-shrink-0 p-3 text-bg-dark min-vh-100" style="width: 280px;">
+    <a href="{% url 'home' %}" class="navbar-brand d-flex gap-3 mb-4 mt-2">
+        <svg xmlns="http://www.w3.org/2000/svg" width="1.5rem" fill="currentColor"
+             class="bi bi-clipboard-data-fill"
+             viewBox="0 0 16 16">
+            <path d="M6.5 0A1.5 1.5 0 0 0 5 1.5v1A1.5 1.5 0 0 0 6.5 4h3A1.5 1.5 0 0 0 11 2.5v-1A1.5 1.5 0 0 0 9.5 0zm3 1a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-3a.5.5 0 0 1-.5-.5v-1a.5.5 0 0 1 .5-.5z"></path>
+            <path d="M4 1.5H3a2 2 0 0 0-2 2V14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V3.5a2 2 0 0 0-2-2h-1v1A2.5 2.5 0 0 1 9.5 5h-3A2.5 2.5 0 0 1 4 2.5zM10 8a1 1 0 1 1 2 0v5a1 1 0 1 1-2 0zm-6 4a1 1 0 1 1 2 0v1a1 1 0 1 1-2 0zm4-3a1 1 0 0 1 1 1v3a1 1 0 1 1-2 0v-3a1 1 0 0 1 1-1"></path>
+        </svg>
+        <span class="fs-4">Project Manager</span>
+    </a>
+    <ul class="nav nav-pills flex-column mb-auto">
+    <li class="nav-item">
+        <a href="{% url 'home' %}" class="nav-link text-white {% if request.path|slice:":9" == '/projects' or request.path|slice:":6" == '/task/' or request.path == '/' %}current{% endif %}">
+            <svg class="bi pe-none me-2" width="16" height="16" xmlns="http://www.w3.org/2000/svg"
+                 fill="currentColor" viewBox="0 0 16 16">
+                <path d="M4 11a1 1 0 1 1 2 0v1a1 1 0 1 1-2 0zm6-4a1 1 0 1 1 2 0v5a1 1 0 1 1-2 0zM7 9a1 1 0 0 1 2 0v3a1 1 0 1 1-2 0z"></path>
+                <path d="M4 1.5H3a2 2 0 0 0-2 2V14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V3.5a2 2 0 0 0-2-2h-1v1h1a1 1 0 0 1 1 1V14a1 1 0 0 1-1 1H3a1 1 0 0 1-1-1V3.5a1 1 0 0 1 1-1h1z"></path>
+                <path d="M9.5 1a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-3a.5.5 0 0 1-.5-.5v-1a.5.5 0 0 1 .5-.5zm-3-1A1.5 1.5 0 0 0 5 1.5v1A1.5 1.5 0 0 0 6.5 4h3A1.5 1.5 0 0 0 11 2.5v-1A1.5 1.5 0 0 0 9.5 0z"></path>
+            </svg>
+            Projects
+        </a>
+    </li>
+    <li>
+        <a href="{% url 'home_user' %}" class="nav-link text-white {% if request.path|slice:":6" == '/users' %}current{% endif %}">
+            <svg class="bi pe-none me-2" width="16" height="16" xmlns="http://www.w3.org/2000/svg"
+                 fill="currentColor" viewBox="0 0 16 16">
+                <path d="M7 14s-1 0-1-1 1-4 5-4 5 3 5 4-1 1-1 1zm4-6a3 3 0 1 0 0-6 3 3 0 0 0 0 6m-5.784 6A2.24 2.24 0 0 1 5 13c0-1.355.68-2.75 1.936-3.72A6.3 6.3 0 0 0 5 9c-4 0-5 3-5 4s1 1 1 1zM4.5 8a2.5 2.5 0 1 0 0-5 2.5 2.5 0 0 0 0 5"></path>
+            </svg>
+            Users
+        </a>
+    </li>
+        <li>
+        <a href="{% url 'home_leave' %}" class="nav-link text-white {% if request.path|slice:":6" == '/leaves' %}current{% endif %}">
+            <svg class="bi pe-none me-2" width="16" height="16" xmlns="http://www.w3.org/2000/svg"
+                 fill="currentColor" viewBox="0 0 16 16">
+                <path d="M7 14s-1 0-1-1 1-4 5-4 5 3 5 4-1 1-1 1zm4-6a3 3 0 1 0 0-6 3 3 0 0 0 0 6m-5.784 6A2.24 2.24 0 0 1 5 13c0-1.355.68-2.75 1.936-3.72A6.3 6.3 0 0 0 5 9c-4 0-5 3-5 4s1 1 1 1zM4.5 8a2.5 2.5 0 1 0 0-5 2.5 2.5 0 0 0 0 5"></path>
+            </svg>
+            Leaves
+        </a>
+    </li>
+</ul>
+
+    <hr>
+    <div class="dropdown">
+        <a href="#" class="d-flex align-items-center gap-2 text-white text-decoration-none dropdown-toggle"
+           data-bs-toggle="dropdown" aria-expanded="false">
+            <svg xmlns="http://www.w3.org/2000/svg" width="1.25rem" fill="currentColor" viewBox="0 0 16 16">
+                <path d="M11 6a3 3 0 1 1-6 0 3 3 0 0 1 6 0"></path>
+                <path fill-rule="evenodd"
+                      d="M0 8a8 8 0 1 1 16 0A8 8 0 0 1 0 8m8-7a7 7 0 0 0-5.468 11.37C3.242 11.226 4.805 10 8 10s4.757 1.225 5.468 2.37A7 7 0 0 0 8 1"></path>
+            </svg>
+            <strong>{% block logged_in_username %}{{ logged_in_username }}{% endblock %}</strong>
+        </a>
+        <ul class="dropdown-menu dropdown-menu-dark text-small shadow">
+            <li><a class="dropdown-item" href="#">Settings</a></li>
+            <li><a class="dropdown-item" href="#">Profile</a></li>
+            <li>
+                <hr class="dropdown-divider">
+            </li>
+            <li><a class="dropdown-item" href="{% url 'logout' %}">Logout</a></li>
+        </ul>
+    </div>
+</div>

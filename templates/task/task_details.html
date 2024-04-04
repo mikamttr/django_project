@@ -1,0 +1,101 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="{% static 'css/style.css' %}" rel="stylesheet">
+    <link href="{% static 'css/bootstrap.min.css' %}" rel="stylesheet">
+    <script src="{% static 'js/bootstrap.bundle.min.js' %}"></script>
+    <script src="{% static 'js/script.js' %}"></script>
+    <title>Task {{ task.task_name }}</title>
+</head>
+<body>
+<div class="container-fluid">
+    <div class="row flex-sm-nowrap">
+        {% include 'navigation.html' %}
+
+        <!-- Page content -->
+        <div class="col py-3">
+            <a href="{% url 'project_details' task.project.id %}">Back to Project</a>
+
+            <h2 class="my-3">
+                Task : {{ task.task_name }}
+                <span>
+                    <a href="{% url 'edit_task' task.id %}">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="1.5rem" height="1.5rem" fill="currentColor"
+                             viewBox="0 0 16 16">
+                            <path d="M15.502 1.94a.5.5 0 0 1 0 .706L14.459 3.69l-2-2L13.502.646a.5.5 0 0 1 .707 0l1.293 1.293zm-1.75 2.456-2-2L4.939 9.21a.5.5 0 0 0-.121.196l-.805 2.414a.25.25 0 0 0 .316.316l2.414-.805a.5.5 0 0 0 .196-.12l6.813-6.814z"></path>
+                            <path fill-rule="evenodd"
+                                  d="M1 13.5A1.5 1.5 0 0 0 2.5 15h11a1.5 1.5 0 0 0 1.5-1.5v-6a.5.5 0 0 0-1 0v6a.5.5 0 0 1-.5.5h-11a.5.5 0 0 1-.5-.5v-11a.5.5 0 0 1 .5-.5H9a.5.5 0 0 0 0-1H2.5A1.5 1.5 0 0 0 1 2.5z"></path>
+                        </svg>
+                    </a>
+                </span>
+            </h2>
+            <div class="mb-4">
+                {% if task.status == 'paused' %}
+                    <span class="badge text-bg-danger">En pause</span>
+                {% elif task.status == 'planned' %}
+                    <span class="badge text-bg-light">Planifié</span>
+                {% elif task.status == 'ongoing' %}
+                    <span class="badge text-bg-secondary bg-opacity-75">En cours</span>
+                {% elif task.status == 'completed' %}
+                    <span class="badge text-bg-success">Réalisée</span>
+                {% elif task.status == 'validated' %}
+                    <span class="badge text-bg-success bg-opacity-75">Validée</span>
+                {% endif %}
+            </div>
+            <div class="row align-items-center mb-3">
+                <div class="col">
+                    <div class="progress" role="progressbar"
+                         aria-valuenow="{{ task.completion_percentage }}" aria-valuemin="0"
+                         aria-valuemax="100">
+                        <div class="progress-bar bg-success"
+                             style="width: {{ task.completion_percentage }}%"></div>
+                    </div>
+                </div>
+                <small class="col-3">{{ task.completion_percentage }}%</small>
+            </div>
+            <p>Project: {{ task.project }}</p>
+            <p>Priorité :
+                {% if task.priority == 'low' %}
+                    Faible
+                {% elif task.priority == 'medium' %}
+                    Moyenne
+                {% elif task.priority == 'high' %}
+                    Élevée
+                {% endif %}
+            </p>
+            <p>Start Date: {{ task.start_date }}</p>
+            <p>Duration: {{ task.duration }} jours</p>
+            <p>Assigned To:
+                {% for user in task.assigned_to.all %}
+                    {{ user.username }}{% if not forloop.last %}, {% endif %}
+                {% endfor %}
+            </p>
+            <p>Progress Reporter: {{ task.progress_reporter }}</p>
+            <p>Description: {{ task.description }}</p>
+
+            {% if task.sub_tasks.exists %}
+                <hr>
+                <h3>Sous Taches</h3>
+                <ul>
+                    {% for child_task in task.sub_tasks.all %}
+                        <li>
+                            <a href="{% url 'task_details' child_task.id %}">{{ child_task.task_name }}</a>
+                            <!-- Add other child task details here -->
+                        </li>
+                    {% endfor %}
+                </ul>
+            {% endif %}
+        
+        <form id="deleteTaskForm" method="post" action="{% url 'delete_task' task.id %}">
+            {% csrf_token %}
+            <button class="btn btn-danger my-2" type="button" id="deleteTaskButton">Delete Task</button>
+        </form>
+        </div>
+
+    </div>
+</div>
+</body>
+</html>
