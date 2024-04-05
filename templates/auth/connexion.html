@@ -12,6 +12,7 @@
         <h1>Connexion</h1>
         <form method="post">
             {% csrf_token %}
+            <p>{{ message }}</p>
             <label for="username">Nom d'utilisateur :</label>
             <input type="text" id="username" name="username">
             <br>

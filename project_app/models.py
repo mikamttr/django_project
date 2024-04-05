@@ -1,29 +1,8 @@
 from django.contrib.auth.models import AbstractUser
 from django.db import models
 from django.utils import timezone
+from authentification.models import User
 
-from django.contrib.auth.models import AbstractUser
-from django.db import models
-from django.utils import timezone
-
-
-class User(AbstractUser):
-
-    groups = models.ManyToManyField(
-        'auth.Group',
-        verbose_name='groups',
-        blank=True,
-        related_name='user_custom_set',
-        related_query_name='user_custom',
-    )
-
-    user_permissions = models.ManyToManyField(
-        'auth.Permission',
-        verbose_name='user permissions',
-        blank=True,
-        related_name='user_custom_set',
-        related_query_name='user_custom',
-    )
 
 
 class Task(models.Model):
