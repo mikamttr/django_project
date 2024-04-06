@@ -22,6 +22,10 @@ def create_groups(apps, schema_migration):
     view_group = Permission.objects.get(codename='view_group')
     change_group = Permission.objects.get(codename='change_group')
 
+    add_leave = Permission.objects.get(codename='add_leave')
+    view_leave = Permission.objects.get(codename='view_leave')
+    change_leave = Permission.objects.get(codename='change_leave')
+
     manager_permissions = [
         add_project,
         edit_project,
@@ -37,7 +41,10 @@ def create_groups(apps, schema_migration):
         view_task,
         add_group,
         view_group,
-        change_group
+        change_group,
+        add_leave,
+        view_leave,
+        change_leave
     ]
 
     employee_permission = [
