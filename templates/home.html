@@ -10,6 +10,7 @@
     <title>Projects</title>
 </head>
 <body>
+
 <div class="container-fluid">
     <div class="row flex-sm-nowrap">
         {% include 'navigation.html' %}
@@ -18,7 +19,9 @@
         <div class="col py-3">
             <h2>Projects</h2>
             <div class="my-4">
+                {% csrf_token %}
                 <!-- Link to the page for adding new projects -->
+
                 <a class="btn btn-dark btn-sm d-inline-flex" type="button" href="{% url 'add_project' %}">
                     <svg class="me-1" xmlns="http://www.w3.org/2000/svg" width="16" fill="currentColor"
                          viewBox="0 0 16 16">
@@ -26,6 +29,7 @@
                     </svg>
                     <span class="me-2">New Project</span>
                 </a>
+
             </div>
             <hr>
             <div class="table-responsive small">

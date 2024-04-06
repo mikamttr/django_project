@@ -1,11 +1,12 @@
 from itertools import groupby
 from django.contrib.auth.decorators import login_required, permission_required
 from django.shortcuts import render, redirect, get_object_or_404
-
 from authentification.forms import UserForm
 from project_app.forms import ProjectForm, TaskForm
 from project_app.models import Project, Task
 from authentification.models import User
+from django.contrib.auth.models import Group
+
 
 @login_required
 def home(request):
@@ -14,7 +15,7 @@ def home(request):
 
 
 @login_required
-@permission_required('add_project')
+@permission_required('authentification.add_project')
 def add_project(request):
     if request.method == 'POST':
         form = ProjectForm(request.POST)
@@ -24,12 +25,12 @@ def add_project(request):
     else:
         form = ProjectForm()
         # Fetch users with role "manager"
-        managers = User.objects.filter(user_role='manager')
+        managers = User.objects.filter(user_role=User.MANAGER)
     return render(request, 'project/add_project.html', {'form': form, 'managers': managers})
 
 
 @login_required
-@permission_required('view_project')
+@permission_required('authentification.view_project')
 def project_details(request, project_id):
     project = get_object_or_404(Project, pk=project_id)
     tasks = project.task_set.all().order_by('parent_task_id')  # Ensure tasks are ordered by parent task
@@ -45,7 +46,7 @@ def project_details(request, project_id):
 
 
 @login_required
-@permission_required('change_project')
+@permission_required('authentification.change_project')
 def edit_project(request, project_id):
     project = get_object_or_404(Project, id=project_id)
     if request.method == 'POST':
@@ -60,7 +61,7 @@ def edit_project(request, project_id):
 
 
 @login_required
-@permission_required('delete_project')
+@permission_required('authentification.delete_project')
 def delete_project(request, project_id):
     project = get_object_or_404(Project, id=project_id)
     if request.method == 'POST':
@@ -69,14 +70,14 @@ def delete_project(request, project_id):
 
 
 @login_required
-@permission_required('view_task')
+@permission_required('authentification.view_task')
 def task_details(request, task_id):
     task = get_object_or_404(Task, id=task_id)
     return render(request, 'task/task_details.html', {'task': task})
 
 
 @login_required
-@permission_required('add_task')
+@permission_required('authentification.add_task')
 def add_task_to_project(request, project_id):
     project = get_object_or_404(Project, pk=project_id)
 
@@ -99,7 +100,7 @@ def add_task_to_project(request, project_id):
 
 
 @login_required
-@permission_required('change_project')
+@permission_required('authentification.change_project')
 def edit_task(request, task_id):
     task = get_object_or_404(Task, id=task_id)
 
@@ -134,7 +135,7 @@ def edit_task(request, task_id):
 
 
 @login_required
-@permission_required('delete_task')
+@permission_required('authentification.delete_task')
 def delete_task(request, task_id):
     task = get_object_or_404(Task, id=task_id)
     if request.method == 'POST':
@@ -150,13 +151,20 @@ def user_home(request):
 
 
 @login_required
-@permission_required('add_user')
+@permission_required('authentification.add_user')
 def add_user(request):
     roles = User.ROLE_CHOICES
     if request.method == 'POST':
         form = UserForm(request.POST)
         if form.is_valid():
-            form.save()
+            new_user = User.objects.create_user(
+                username=form.data.get('username'),
+                password=form.data.get('password'),
+            )
+            form_group = Group.objects.get(name=form.data.get('user_role'))
+            form_group.user_set.add()
+            new_user.save()
+            form_group.save()
             return redirect('home_user')
     else:
         form = UserForm()
@@ -164,14 +172,14 @@ def add_user(request):
 
 
 @login_required
-@permission_required('view_user')
+@permission_required('authentification.view_user')
 def user_details(request, user_id):
     user = get_object_or_404(User, pk=user_id)
     return render(request, 'user/user_details.html', {'user': user})
 
 
 @login_required
-@permission_required('change_user')
+@permission_required('authentification.change_user')
 def edit_user(request, user_id):
     user = get_object_or_404(User, pk=user_id)
     # Fetch all distinct user roles
@@ -187,7 +195,7 @@ def edit_user(request, user_id):
 
 
 @login_required
-@permission_required('delete_user')
+@permission_required('authentification.delete_user')
 def delete_user(request, user_id):
     user = get_object_or_404(User, id=user_id)
     if request.method == 'POST':
