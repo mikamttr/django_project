@@ -15,6 +15,7 @@
         <div class="my-4">
             <a href="/">Back to menu</a>
         </div>
+        {% include 'error/error.html' %}
         {% csrf_token %}
         <div class="mb-3">
             <label for="project_name" class="form-label">Project Name</label>

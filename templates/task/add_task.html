@@ -16,6 +16,7 @@
     <a href="{% url 'project_details' project_id %}">Back to Project</a>
 </div>
         {% csrf_token %}
+        {% include 'error/error.html' %}
         <input type="hidden" name="project" value="{{ project_id }}">
         <div class="mb-3">
             <label for="task_name" class="form-label">Nom de la tâche</label>

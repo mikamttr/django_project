@@ -60,12 +60,12 @@ def create_groups(apps, schema_migration):
 
     manager.permissions.set(manager_permissions)
 
-    employee = Group(name='employee')
+    employee = Group(name='employer')
     employee.save()
     employee.permissions.set(employee_permission)
 
     for user in User.objects.all():
         if user.user_role == 'MANAGER':
             manager.user_set.add(user)
-        if user.user_role == 'EMPLOYEE':
+        if user.user_role == 'EMPLOYER':
             employee.user_set.add(user)

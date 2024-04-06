@@ -16,6 +16,8 @@
             <a href="/">Back to menu</a>
         </div>
         {% csrf_token %}
+
+        {% include 'error/error.html' %}
         <div class="mb-3">
             <label for="leave_name" class="form-label">Leave Name</label>
             <input type="text" class="form-control" id="leave_name" name="leave_name">
