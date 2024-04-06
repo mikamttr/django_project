@@ -1,0 +1,49 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="{% static 'css/style.css' %}" rel="stylesheet">
+    <link href="{% static 'css/bootstrap.min.css' %}" rel="stylesheet">
+    <script src="{% static 'js/bootstrap.bundle.min.js' %}"></script>
+    <title>Create new leave</title>
+</head>
+<body>
+<div class="container d-flex justify-content-center">
+    <form method="post" style="flex-basis: 60%">
+        <div class="my-4">
+            <a href="/">Back to menu</a>
+        </div>
+        {% csrf_token %}
+        <div class="mb-3">
+            <label for="leave_name" class="form-label">Leave Name</label>
+            <input type="text" class="form-control" id="leave_name" name="leave_name">
+        </div>
+        <div class="mb-3">
+            <label for="leave_description" class="form-label">Leave Description</label>
+            <input type="text" class="form-control" id="leave_description" name="leave_description">
+        </div>
+        <div class="mb-3">
+            <label for="start_date" class="form-label">Start Date</label>
+            <input type="date" class="form-control" id="start_date" name="start_date">
+        </div>
+        <div class="mb-3">
+            <label for="end_date" class="form-label">End Date</label>
+            <input type="date" class="form-control" id="end_date" name="end_date">
+        </div>
+        <div class="field mb-3">
+            <label class="form-label" for="user_id">User</label>
+            <select class="form-select" id="user_id" name="user_id">
+                {% for users in users %}
+                    <option value="{{ users.id }}">{{ users.username }}</option>
+                {% endfor %}
+            </select>
+        </div>
+        <div class="my-4">
+            <button type="submit" class="btn btn-dark">Add Leave</button>
+        </div>
+    </form>
+</div>
+</body>
+</html>
