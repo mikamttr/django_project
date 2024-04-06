@@ -160,7 +160,7 @@ def add_user(request):
             password = form.data.get('password')
             email = form.data.get('email')
             user_role = form.data.get('user_role')
-            user = User.objects.create_user(username=username, password=password, email=email,user_role=user_role)
+            user = User.objects.create_user(username=username, password=password, email=email, user_role=user_role)
             user.save()
             group_name = form.data.get('user_role')
             group = Group.objects.get(name=group_name.lower())
@@ -178,20 +178,6 @@ def user_details(request, user_id):
     return render(request, 'user/user_details.html', {'user': user})
 
 
-@login_required
-@permission_required('authentification.change_user')
-def edit_user(request, user_id):
-    user = get_object_or_404(User, pk=user_id)
-    # Fetch all distinct user roles
-    user_roles = User.objects.values_list('user_role', flat=True).distinct()
-    if request.method == 'POST':
-        form = UserForm(request.POST, instance=user)
-        if form.is_valid():
-            form.save()
-            return redirect('user_details', user_id=user_id)
-    else:
-        form = UserForm(instance=user)
-    return render(request, 'user/edit_user.html', {'form': form, 'user_roles': user_roles})
 
 
 @login_required
@@ -211,7 +197,7 @@ def add_leave(request):
         if form.is_valid():
             leave = form.save(commit=False)
             leave.save()
-            return redirect('home')
+            return redirect('home_leave')
     else:
         form = LeaveForm()
         users = User.objects.all()

@@ -17,8 +17,27 @@
 
     <form method="post">
         {% csrf_token %}
-        {{ form.as_p }}
-        <button type="submit" class="btn btn-dark">Update user</button>
+         <div class="mb-3">
+            <label for="username" class="form-label">username</label>
+            <input type="text" class="form-control" id="username" name="username" value="{{ form.instance.project_name }}">
+        </div>
+         <div class="mb-3">
+            <label for="email" class="form-label">Project Name</label>
+            <input type="text" class="form-control" id="email" name="email" value="{{ form.instance.project_name }}">
+        </div>
+         <div class="mb-3">
+            <label for="password" class="form-label">password</label>
+            <input type="text" class="form-control" id="password" name="password" value="{{ form.instance.project_name }}">
+        </div>
+         <div class="mb-3">
+            <label for="user_role" class="form-label">user_role</label>
+            <input type="text" class="form-control" id="user_role" name="user_role" value="{{ form.instance.project_name }}">
+        </div>
+        {{ user.username }}
+        {{ user.email }}
+        {{ user.password }}
+        {{ user.user_role }}
+        <button type="submit" class="btn btn-dark">Save Changes</button>
     </form>
 </div>
 </body>

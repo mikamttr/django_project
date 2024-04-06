@@ -2,6 +2,7 @@ from django.db.models.signals import post_save, post_delete
 from django.dispatch import receiver
 from .models import Task, Project
 
+
 @receiver(post_save, sender=Task)
 @receiver(post_delete, sender=Task)
 def update_project_status_and_progress(sender, instance, **kwargs):
@@ -23,6 +24,7 @@ def update_project_status_and_progress(sender, instance, **kwargs):
     else:
         project.progress_percentage = 0
     project.save()
+
 
 @receiver(post_save, sender=Task)
 def update_project_status_on_task_update(sender, instance, **kwargs):
