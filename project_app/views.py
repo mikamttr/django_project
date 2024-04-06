@@ -2,10 +2,9 @@ from itertools import groupby
 from django.contrib.auth.decorators import login_required, permission_required
 from django.shortcuts import render, redirect, get_object_or_404
 from authentification.forms import UserForm
-from project_app.forms import ProjectForm, TaskForm
-from project_app.models import Project, Task
-from authentification.models import User
 from django.contrib.auth.models import Group
+from project_app.forms import ProjectForm, TaskForm, LeaveForm
+from project_app.models import Project, User, Task, Leave
 
 
 @login_required
@@ -15,7 +14,7 @@ def home(request):
 
 
 @login_required
-@permission_required('authentification.add_project')
+@permission_required('project_app.add_project')
 def add_project(request):
     if request.method == 'POST':
         form = ProjectForm(request.POST)
@@ -30,7 +29,7 @@ def add_project(request):
 
 
 @login_required
-@permission_required('authentification.view_project')
+@permission_required('project_app.view_project')
 def project_details(request, project_id):
     project = get_object_or_404(Project, pk=project_id)
     tasks = project.task_set.all().order_by('parent_task_id')  # Ensure tasks are ordered by parent task
@@ -46,7 +45,7 @@ def project_details(request, project_id):
 
 
 @login_required
-@permission_required('authentification.change_project')
+@permission_required('project_app.change_project')
 def edit_project(request, project_id):
     project = get_object_or_404(Project, id=project_id)
     if request.method == 'POST':
@@ -61,7 +60,7 @@ def edit_project(request, project_id):
 
 
 @login_required
-@permission_required('authentification.delete_project')
+@permission_required('project_app.delete_project')
 def delete_project(request, project_id):
     project = get_object_or_404(Project, id=project_id)
     if request.method == 'POST':
@@ -70,14 +69,14 @@ def delete_project(request, project_id):
 
 
 @login_required
-@permission_required('authentification.view_task')
+@permission_required('project_app.view_task')
 def task_details(request, task_id):
     task = get_object_or_404(Task, id=task_id)
     return render(request, 'task/task_details.html', {'task': task})
 
 
 @login_required
-@permission_required('authentification.add_task')
+@permission_required('project_app.add_task')
 def add_task_to_project(request, project_id):
     project = get_object_or_404(Project, pk=project_id)
 
@@ -100,7 +99,7 @@ def add_task_to_project(request, project_id):
 
 
 @login_required
-@permission_required('authentification.change_project')
+@permission_required('project_app.change_project')
 def edit_task(request, task_id):
     task = get_object_or_404(Task, id=task_id)
 
@@ -135,7 +134,7 @@ def edit_task(request, task_id):
 
 
 @login_required
-@permission_required('authentification.delete_task')
+@permission_required('project_app.delete_task')
 def delete_task(request, task_id):
     task = get_object_or_404(Task, id=task_id)
     if request.method == 'POST':
@@ -157,14 +156,14 @@ def add_user(request):
     if request.method == 'POST':
         form = UserForm(request.POST)
         if form.is_valid():
-            new_user = User.objects.create_user(
-                username=form.data.get('username'),
-                password=form.data.get('password'),
-            )
-            form_group = Group.objects.get(name=form.data.get('user_role'))
-            form_group.user_set.add()
-            new_user.save()
-            form_group.save()
+            username = form.cleaned_data['username']
+            password = form.cleaned_data['password']
+            user = User.objects.create_user(username=username, password=password)
+            user.user_role = form.cleaned_data['user_role']
+            user.save()
+            group_name = form.cleaned_data['user_role']
+            group = Group.objects.get(name=group_name.lower())
+            group.user_set.add(user)
             return redirect('home_user')
     else:
         form = UserForm()
@@ -201,3 +200,25 @@ def delete_user(request, user_id):
     if request.method == 'POST':
         user.delete()
         return redirect('home_user')
+
+
+@login_required
+@permission_required('project_app.add_leave')
+def add_leave(request):
+    if request.method == 'POST':
+        form = LeaveForm(request.POST)
+        if form.is_valid():
+            leave = form.save(commit=False)
+            leave.save()
+            return redirect('home')
+    else:
+        form = LeaveForm()
+        users = User.objects.all()
+    return render(request, 'leaves/add_leave.html', {'form': form, 'users': users})
+
+
+@login_required
+@permission_required('project_app.view_leave')
+def home_leave(request):
+    leaves = Leave.objects.all()
+    return render(request, 'leaves/leave_details.html', {'leaves': leaves})
