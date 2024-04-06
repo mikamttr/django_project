@@ -156,12 +156,13 @@ def add_user(request):
     if request.method == 'POST':
         form = UserForm(request.POST)
         if form.is_valid():
-            username = form.cleaned_data['username']
-            password = form.cleaned_data['password']
-            user = User.objects.create_user(username=username, password=password)
-            user.user_role = form.cleaned_data['user_role']
+            username = form.data.get('username')
+            password = form.data.get('password')
+            email = form.data.get('email')
+            user_role = form.data.get('user_role')
+            user = User.objects.create_user(username=username, password=password, email=email,user_role=user_role)
             user.save()
-            group_name = form.cleaned_data['user_role']
+            group_name = form.data.get('user_role')
             group = Group.objects.get(name=group_name.lower())
             group.user_set.add(user)
             return redirect('home_user')
