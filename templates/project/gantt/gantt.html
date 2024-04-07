@@ -1,0 +1,34 @@
+<div>
+
+    <h1>Diagramme de Gantt</h1>
+
+    {% if gantt_chart %}
+    <table>
+        <thead>
+            <tr>
+                <th>Tâche ID</th>
+                <th>Date de début</th>
+                <th>Durée (jours)</th>
+                <th>Date de fin</th>
+                <th>Tâche parent</th>
+                <th>depend de</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for task_id, start_date, duration, end_date, parent_task, depend_on in gantt_chart %}
+            <tr>
+                <td>{{ task_id }}</td>
+                <td>{{ start_date }}</td>
+                <td>{{ duration }}</td>
+                <td>{{ end_date }}</td>
+                <td>{{ parent_task }}</td>
+                <td>{{ depend_on }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    {% else %}
+    <p>Aucune tâche trouvée pour ce projet.</p>
+    {% endif %}
+
+</div>

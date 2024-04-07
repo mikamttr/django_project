@@ -5,7 +5,7 @@ from authentification.forms import UserForm
 from django.contrib.auth.models import Group
 from project_app.forms import ProjectForm, TaskForm, LeaveForm
 from project_app.models import Project, User, Task, Leave
-
+from project_app.utils import gantt_chart
 
 @login_required
 def home(request):
@@ -31,6 +31,7 @@ def add_project(request):
 @login_required
 @permission_required('project_app.view_project')
 def project_details(request, project_id):
+    gantt, max_end_date = gantt_chart(project_id)
     project = get_object_or_404(Project, pk=project_id)
     tasks = project.task_set.all().order_by('parent_task_id')  # Ensure tasks are ordered by parent task
     grouped_tasks = {}
@@ -41,7 +42,12 @@ def project_details(request, project_id):
         else:
             grouped_tasks["None"] = list(task_group)
 
-    return render(request, 'project/project_details.html', {'project': project, 'grouped_tasks': grouped_tasks})
+    return render(request, 'project/project_details.html', {
+        'project': project,
+        'grouped_tasks': grouped_tasks,
+        'gantt_chart': gantt,
+        'max_end_date': max_end_date
+    })
 
 
 @login_required
@@ -79,7 +85,7 @@ def task_details(request, task_id):
 @permission_required('project_app.add_task')
 def add_task_to_project(request, project_id):
     project = get_object_or_404(Project, pk=project_id)
-
+    main_tasks = Task.objects.filter(parent_task__isnull=True)
     if request.method == 'POST':
         form = TaskForm(request.POST)
         if form.is_valid():
@@ -95,14 +101,14 @@ def add_task_to_project(request, project_id):
     # Fetch all tasks related to the project
     parent_tasks = Task.objects.filter(project=project)
 
-    return render(request, 'task/add_task.html', {'form': form, 'project_id': project_id, 'parent_tasks': parent_tasks})
+    return render(request, 'task/add_task.html', {'form': form, 'project_id': project_id, 'parent_tasks': parent_tasks, 'main_tasks':main_tasks})
 
 
 @login_required
 @permission_required('project_app.change_project')
 def edit_task(request, task_id):
     task = get_object_or_404(Task, id=task_id)
-
+    main_tasks = Task.objects.filter(parent_task__isnull=True)
     if request.method == 'POST':
         form = TaskForm(request.POST, instance=task)
         if form.is_valid():
@@ -126,7 +132,8 @@ def edit_task(request, task_id):
         'task': task,
         'users': users,  # Include all users in the context
         'projects': projects,  # Include all projects in the context
-        'project_tasks': project_tasks,  # Include all tasks of the current viewed task's project in the context
+        'project_tasks': project_tasks,
+        'main_tasks': main_tasks# Include all tasks of the current viewed task's project in the context
     }
 
     # Render the edit_task.html template with the context
@@ -209,3 +216,4 @@ def add_leave(request):
 def home_leave(request):
     leaves = Leave.objects.all()
     return render(request, 'leaves/leave_details.html', {'leaves': leaves})
+

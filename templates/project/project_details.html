@@ -76,83 +76,83 @@
 
             <!-- Table displaying all project tasks grouped by parent task -->
             {% for parent_task, tasks in grouped_tasks.items %}
-                {% if parent_task != "None" %}
-                    <h5 class="m-2">{{ parent_task }}</h5>
-                {% endif %}
-                <div class="table-responsive small">
-                    <table class="table table-hover">
-                        <thead>
-                        <tr>
-                            <th>Task name</th>
-                            <th>Status</th>
-                            <th>Priority</th>
-                            <th>Start Date</th>
-                            <th>Duration</th>
-                            <th>Progress</th>
-                            <th>Progress Reporter</th>
-                            <th></th>
-                        </tr>
-                        </thead>
-                        <tbody>
-                        {% for task in tasks %}
-                            <tr>
-                                <td>{{ task.task_name }}</td>
-                                <td>
-                                    {% if task.status == 'paused' %}
-                                        <span class="badge text-bg-danger">En pause</span>
-                                    {% elif task.status == 'planned' %}
-                                        <span class="badge text-bg-light">Planifié</span>
-                                    {% elif task.status == 'ongoing' %}
-                                        <span class="badge text-bg-secondary bg-opacity-75">En cours</span>
-                                    {% elif task.status == 'completed' %}
-                                        <span class="badge text-bg-success">Réalisée</span>
-                                    {% elif task.status == 'validated' %}
-                                        <span class="badge text-bg-success bg-opacity-75">Validée</span>
-                                    {% endif %}
-                                </td>
-                                <td>
-                                    {% if task.priority == 'low' %}
-                                        Faible
-                                    {% elif task.priority == 'medium' %}
-                                        Moyenne
-                                    {% elif task.priority == 'high' %}
-                                        Élevée
-                                    {% endif %}
-                                </td>
-                                <td>{{ task.start_date }}</td>
-                                <td>{{ task.duration }} days</td>
-                                <td>
-                                    <div class="row align-items-center">
-                                        <div class="col">
-                                            <div class="progress" role="progressbar"
-                                                 aria-valuenow="{{ task.completion_percentage }}" aria-valuemin="0"
-                                                 aria-valuemax="100">
-                                                <div class="progress-bar bg-success"
-                                                     style="width: {{ task.completion_percentage }}%"></div>
-                                            </div>
-                                        </div>
-                                        <small class="col-3">{{ task.completion_percentage }}%</small>
+            {% if parent_task != "None" %}
+            <h5 class="m-2">{{ parent_task }}</h5>
+            {% endif %}
+            <div class="table-responsive small">
+                <table class="table table-hover">
+                    <thead>
+                    <tr>
+                        <th>Task name</th>
+                        <th>Status</th>
+                        <th>Priority</th>
+                        <th>Start Date</th>
+                        <th>Duration</th>
+                        <th>Progress</th>
+                        <th>Progress Reporter</th>
+                        <th></th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    {% for task in tasks %}
+                    <tr>
+                        <td>{{ task.task_name }}</td>
+                        <td>
+                            {% if task.status == 'paused' %}
+                            <span class="badge text-bg-danger">En pause</span>
+                            {% elif task.status == 'planned' %}
+                            <span class="badge text-bg-light">Planifié</span>
+                            {% elif task.status == 'ongoing' %}
+                            <span class="badge text-bg-secondary bg-opacity-75">En cours</span>
+                            {% elif task.status == 'completed' %}
+                            <span class="badge text-bg-success">Réalisée</span>
+                            {% elif task.status == 'validated' %}
+                            <span class="badge text-bg-success bg-opacity-75">Validée</span>
+                            {% endif %}
+                        </td>
+                        <td>
+                            {% if task.priority == 'low' %}
+                            Faible
+                            {% elif task.priority == 'medium' %}
+                            Moyenne
+                            {% elif task.priority == 'high' %}
+                            Élevée
+                            {% endif %}
+                        </td>
+                        <td>{{ task.start_date }}</td>
+                        <td>{{ task.duration }} days</td>
+                        <td>
+                            <div class="row align-items-center">
+                                <div class="col">
+                                    <div class="progress" role="progressbar"
+                                         aria-valuenow="{{ task.completion_percentage }}" aria-valuemin="0"
+                                         aria-valuemax="100">
+                                        <div class="progress-bar bg-success"
+                                             style="width: {{ task.completion_percentage }}%"></div>
                                     </div>
-                                </td>
-                                <td>{{ task.progress_reporter.username }}</td>
-                                <td class="text-end">
-                                    <a href="{% url 'task_details' task.id %}" class="link-dark opacity-75">
-                                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
-                                             fill="currentColor" class="bi bi-info-circle" viewBox="0 0 16 16">
-                                            <title>{{ task.task_name }} details</title>
-                                            <path d="M10.5 8a2.5 2.5 0 1 1-5 0 2.5 2.5 0 0 1 5 0"></path>
-                                            <path d="M0 8s3-5.5 8-5.5S16 8 16 8s-3 5.5-8 5.5S0 8 0 8m8 3.5a3.5 3.5 0 1 0 0-7 3.5 3.5 0 0 0 0 7"></path>
-                                        </svg>
-                                    </a>
-                                </td>
-                            </tr>
-                        {% endfor %}
-                        </tbody>
-                    </table>
-                </div>
+                                </div>
+                                <small class="col-3">{{ task.completion_percentage }}%</small>
+                            </div>
+                        </td>
+                        <td>{{ task.progress_reporter.username }}</td>
+                        <td class="text-end">
+                            <a href="{% url 'task_details' task.id %}" class="link-dark opacity-75">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
+                                     fill="currentColor" class="bi bi-info-circle" viewBox="0 0 16 16">
+                                    <title>{{ task.task_name }} details</title>
+                                    <path d="M10.5 8a2.5 2.5 0 1 1-5 0 2.5 2.5 0 0 1 5 0"></path>
+                                    <path d="M0 8s3-5.5 8-5.5S16 8 16 8s-3 5.5-8 5.5S0 8 0 8m8 3.5a3.5 3.5 0 1 0 0-7 3.5 3.5 0 0 0 0 7"></path>
+                                </svg>
+                            </a>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
+            </div>
             {% endfor %}
         </div>
-
+        {% include 'project/gantt/gantt.html' %}
     </div>
 </div>
 </body>

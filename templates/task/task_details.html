@@ -88,13 +88,27 @@
                     {% endfor %}
                 </ul>
             {% endif %}
+
+
+{% if task.depend_on.exists %}
+    <hr>
+    <h3>Dépendances</h3>
+    <ul>
+        {% for dependency_task in task.depend_on.all %}
+            <li>
+                <a href="{% url 'task_details' dependency_task.id %}">{{ dependency_task.task_name }}</a>
+            </li>
+        {% endfor %}
+    </ul>
+{% endif %}
+
+
         
         <form id="deleteTaskForm" method="post" action="{% url 'delete_task' task.id %}">
             {% csrf_token %}
             <button class="btn btn-danger my-2" type="button" id="deleteTaskButton">Delete Task</button>
         </form>
         </div>
-
     </div>
 </div>
 </body>

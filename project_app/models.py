@@ -31,6 +31,8 @@ class Task(models.Model):
     assigned_to = models.ManyToManyField(User, related_name='assigned_tasks')
     progress_reporter = models.ForeignKey(User, on_delete=models.CASCADE, related_name='progress_reports')
     parent_task = models.ForeignKey('self', on_delete=models.CASCADE, null=True, blank=True, related_name='sub_tasks')
+    depend_on = models.ManyToManyField('self', symmetrical=False, blank=True, related_name='dependent_tasks')
+
 
     def __str__(self):
         return self.task_name
