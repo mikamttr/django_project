@@ -7,6 +7,7 @@ from project_app.forms import ProjectForm, TaskForm, LeaveForm
 from project_app.models import Project, User, Task, Leave
 from project_app.utils import gantt_chart
 
+
 @login_required
 def home(request):
     projects = Project.objects.all()
@@ -101,7 +102,8 @@ def add_task_to_project(request, project_id):
     # Fetch all tasks related to the project
     parent_tasks = Task.objects.filter(project=project)
 
-    return render(request, 'task/add_task.html', {'form': form, 'project_id': project_id, 'parent_tasks': parent_tasks, 'main_tasks':main_tasks})
+    return render(request, 'task/add_task.html',
+                  {'form': form, 'project_id': project_id, 'parent_tasks': parent_tasks, 'main_tasks': main_tasks})
 
 
 @login_required
@@ -133,7 +135,7 @@ def edit_task(request, task_id):
         'users': users,  # Include all users in the context
         'projects': projects,  # Include all projects in the context
         'project_tasks': project_tasks,
-        'main_tasks': main_tasks# Include all tasks of the current viewed task's project in the context
+        'main_tasks': main_tasks  # Include all tasks of the current viewed task's project in the context
     }
 
     # Render the edit_task.html template with the context
@@ -185,8 +187,6 @@ def user_details(request, user_id):
     return render(request, 'user/user_details.html', {'user': user})
 
 
-
-
 @login_required
 @permission_required('authentification.delete_user')
 def delete_user(request, user_id):
@@ -215,5 +215,24 @@ def add_leave(request):
 @permission_required('project_app.view_leave')
 def home_leave(request):
     leaves = Leave.objects.all()
-    return render(request, 'leaves/leave_details.html', {'leaves': leaves})
+    return render(request, 'leaves/leaves.html', {'leaves': leaves})
+
+
+@login_required
+@permission_required('project_app.view_leave')
+def leave_details(request, leave_id):
+    # Récupérer le congé spécifique en fonction de l'ID
+    leave = get_object_or_404(Leave, pk=leave_id)
+    # Rendre le template avec le congé spécifique
+    return render(request, 'leaves/leave_details.html', {'leave': leave})
+
+
+@login_required
+@permission_required('project_app.delete_leave')
+def delete_leave(request, leave_id):
+    leave = get_object_or_404(Leave, id=leave_id)
+    if request.method == 'POST':
+        leave.delete()
+        return redirect('home_leave')
+    return render(request, 'leaves/leave_details.html', {'leave': leave})
 

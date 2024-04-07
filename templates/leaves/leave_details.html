@@ -7,7 +7,8 @@
     <link href="{% static 'css/style.css' %}" rel="stylesheet">
     <link href="{% static 'css/bootstrap.min.css' %}" rel="stylesheet">
     <script src="{% static 'js/bootstrap.bundle.min.js' %}"></script>
-    <title>Users</title>
+    <script src="{% static 'js/script.js' %}"></script>
+    <title>Leave Details</title>
 </head>
 <body>
 <div class="container-fluid">
@@ -15,53 +16,26 @@
         {% include 'navigation.html' %}
         <!-- Page content -->
         <div class="col py-3">
-            <h2>Leaves</h2>
-            <div class="my-4">
-                <!-- Link to the page for adding new user -->
-                <a class="btn btn-dark btn-sm d-inline-flex" type="button" href="{% url 'add_leave' %}">
-                    <svg class="me-1" xmlns="http://www.w3.org/2000/svg" width="16" fill="currentColor"
-                         viewBox="0 0 16 16">
-                        <path d="M8 4a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5 0 0 1 8 4"></path>
-                    </svg>
-                    <span class="me-2">New Leave</span>
-                </a>
-            </div>
+            <h2>Leave Details</h2>
             <hr>
-            <div class="table-responsive small">
-                <table class="table table-borderless table-hover">
-                    <thead>
-                    <tr>
-                        <th>Leave name</th>
-                        <th>Employee</th>
-                        <th>Start date</th>
-                        <th>End date</th>
 
-                    </tr>
-                    </thead>
-                    {% for leave in leaves %}
-                    <tbody>
+            <form id="deleteLeaveForm" method="post" action="{% url 'delete_leave' leave.id %}">
+                {% csrf_token %}
+                <button class="btn btn-danger my-2" type="button" id="deleteLeaveButton">Delete Leave</button>
+            </form>
 
-                        <tr>
-                            <td>{{ leave.leave_name }}</td>
 
-                            <td>{{ leave.user_id }}</td>
-                            <td>
-                                <small class="text-secondary">{{ leave.start_date }}</small>
-                            </td>
-                            <td>
-                                <small class="text-secondary">{{ leave.end_date }}</small>
-                            </td>
-
-                        </tr>
-
-                    </tbody>
-                    {% endfor %}
-                </table>
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title">{{ leave.leave_name }}</h5>
+                    <p class="card-text">Description: {{ leave.leave_description }}</p>
+                    <p class="card-text">Employee: {{ leave.user_id }}</p>
+                    <p class="card-text">Start Date: {{ leave.start_date }}</p>
+                    <p class="card-text">End Date: {{ leave.end_date }}</p>
+                </div>
             </div>
         </div>
     </div>
 </div>
 </body>
-
-
 </html>
