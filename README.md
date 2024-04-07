@@ -5,5 +5,6 @@ python3 -m venv myenv
 source myenv/bin/activate
 git clone https://github.com/mikamttr/django_project.git
 cd django_project
+git checkout feature/master
 pip install -r requirements.txt
 python manage.py migrate
