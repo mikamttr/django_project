@@ -32,7 +32,7 @@
         </a>
     </li>
 {% endif %}
-        {% if perms.project_app.view_leave %}
+        {% if perms.project_app.add_leave %}
         <li>
         <a href="{% url 'home_leave' %}" class="nav-link text-white {% if request.path|slice:":7" == '/leaves' %}current{% endif %}">
             <svg class="bi pe-none me-2" width="16" height="16" xmlns="http://www.w3.org/2000/svg"

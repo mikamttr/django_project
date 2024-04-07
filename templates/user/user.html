@@ -46,11 +46,9 @@
                             <td>{{ user.email }}</td>
 
                             <td>
-                                {% if user.user_role == 'employee' %}
-                                    <small class="text-secondary">{{ user.user_role }}</small>
-                                {% elif user.user_role == 'manager' %}
+
                                     <small class="text-success fw-bold">{{ user.user_role }}</small>
-                                {% endif %}
+
                             </td>
                             <td class="text-end">
                                 <a href="{% url 'user_details' user.id %}" class="link-dark opacity-75">

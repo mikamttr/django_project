@@ -56,7 +56,8 @@ def create_groups(apps, schema_migration):
         delete_task,
         view_task,
         add_leave,
-        delete_leave
+        delete_leave,
+        view_leave
     ]
 
     manager = Group(name='manager')
